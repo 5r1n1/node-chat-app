@@ -1,0 +1,24 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:5r1n1/node-chat-app.git"
+  },
+  "description": "Chat App with NodeJS created as a part of NodeJS training course",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "export NODE_ENV=test && jest --verbose --detectOpenHandles",
+    "testmon": "export NODE_ENV=test && jest --verbose --watchAll"
+  },
+  "engines": {
+    "node": "10.14.1",
+    "npm": "6.5.0"
+  },
+  "author": "Srinivas Gopalakrishnan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
