@@ -1,10 +1,12 @@
+const moment   = require ('moment')
+
 const genMsg = (from, text) => 
-    ({from, text, createdAt: new Date().getTime()})
+    ({from, text, createdAt: moment().valueOf()})
 
 const genLocMsg = (from, lat, lon) => ({
     from,
     url: `https://www.google.com/maps?q=loc:${lat},${lon}`,
-    createdAt: new Date().getTime()
+    createdAt: moment().valueOf()
 })
 
 module.exports = { genMsg, genLocMsg }

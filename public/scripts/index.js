@@ -7,13 +7,15 @@ const locButton = $ ('#send-location')
 socket.on ('connect', function () {console.log ('Connected to Server')})
 socket.on ('disconnect', function () {console.log ('Disconnected to Server')})
 socket.on ('newMessage', function (msg) {
-    msgList.append ($ ('<li></li>').text (`${msg.from}: ${msg.text}`))
+    const msgAt = moment(msg.createdAt).format('h:mm a')
+    msgList.append ($ ('<li></li>').text (`${msg.from} ${msgAt}: ${msg.text}`))
 })
 
 socket.on ('newLogMsg', function (msg) {
+    const msgAt = moment(msg.createdAt).format('h:mm a')
     var li = $ ('<li></li>')
     var a = $ ('<a target="_blank">My current location</a>')
-    li.text (`${msg.from}: `)
+    li.text (`${msg.from} ${msgAt}: `)
     a.attr ('href', msg.url)
     li.append (a)
     msgList.append (li)
