@@ -15,8 +15,14 @@ const io = socketIO (server)
 io.on ('connect', socket => {
     socket.emit ('newMessage', genMsg ('Admin','Welcome to the chat room'))
     socket.broadcast.emit ('newMessage', genMsg ('Admin', 'A new user has entered the chat room'))
-    socket.on ('createMessage', msg => io.emit ('newMessage', genMsg (msg.from, msg.text)))
-    socket.on ('createLocMsg', msg => io.emit ('newLogMsg', genLocMsg ('Admin', msg.lat, msg.lon)))
+    socket.on ('createMessage', (msg, cb) => {
+        io.emit ('newMessage', genMsg (msg.from, msg.text))
+        cb()
+    })
+    socket.on ('createLocMsg', (msg, cb) => {
+        io.emit ('newLogMsg', genLocMsg ('Admin', msg.lat, msg.lon))
+        cb()
+    })
 })
 
 app.use (express.static(publicPath))
