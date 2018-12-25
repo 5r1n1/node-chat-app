@@ -20,7 +20,7 @@ io.on ('connect', socket => {
         cb()
     })
     socket.on ('createLocMsg', (msg, cb) => {
-        io.emit ('newLogMsg', genLocMsg ('Admin', msg.lat, msg.lon))
+        io.emit ('newLocMsg', genLocMsg ('Admin', msg.lat, msg.lon))
         cb()
     })
 })

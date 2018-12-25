@@ -2,23 +2,26 @@ const socket    = io ()
 const msgInput  = $ ('[name=message]')
 const msgForm   = $ ('#message-form')
 const msgList   = $ ('#messages')
+const msgTempl  = $ ('#message-template')
+const locTempl  = $ ('#location-message-template')
 const locButton = $ ('#send-location')
 
 socket.on ('connect', function () {console.log ('Connected to Server')})
 socket.on ('disconnect', function () {console.log ('Disconnected to Server')})
 socket.on ('newMessage', function (msg) {
-    const msgAt = moment(msg.createdAt).format('h:mm a')
-    msgList.append ($ ('<li></li>').text (`${msg.from} ${msgAt}: ${msg.text}`))
+    const msgAt = moment (msg.createdAt).format ('h:mm a')
+    const templ = msgTempl.html ()
+    const html = Mustache.render (templ,
+        {from: msg.from, text: msg.text, msgAt})
+    msgList.append (html)
 })
 
-socket.on ('newLogMsg', function (msg) {
+socket.on ('newLocMsg', function (msg) {
     const msgAt = moment(msg.createdAt).format('h:mm a')
-    var li = $ ('<li></li>')
-    var a = $ ('<a target="_blank">My current location</a>')
-    li.text (`${msg.from} ${msgAt}: `)
-    a.attr ('href', msg.url)
-    li.append (a)
-    msgList.append (li)
+    const templ = locTempl.html ()
+    const html = Mustache.render (templ,
+        {from: msg.from, url: msg.url, msgAt})
+    msgList.append (html)
 })
 
 msgForm.on ('submit', function (e) {
