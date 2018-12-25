@@ -14,14 +14,16 @@ const io = socketIO (server)
 
 io.on ('connect', socket => {
     socket.emit ('newMessage', genMsg ('Admin','Welcome to the chat room'))
-    socket.broadcast.emit ('newMessage', genMsg ('Admin', 'A new user has entered the chat room'))
-    socket.on ('createMessage', (msg, cb) => {
-        io.emit ('newMessage', genMsg (msg.from, msg.text))
-        cb()
-    })
+
+    socket.broadcast.emit ('newMessage', 
+        genMsg ('Admin', 'A new user has entered the chat room'))
+
+    socket.on ('createMessage', msg => 
+        io.emit ('newMessage', genMsg (msg.from, msg.text)))
+
     socket.on ('createLocMsg', (msg, cb) => {
-        io.emit ('newLocMsg', genLocMsg ('Admin', msg.lat, msg.lon))
-        cb()
+        io.emit ('newLocMsg', genLocMsg (msg.from, msg.lat, msg.lon))
+        cb ()
     })
 })
 
