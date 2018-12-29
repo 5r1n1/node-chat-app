@@ -1,0 +1,1 @@
+exports.isRealStr = s => ((typeof s == 'string') && (s.trim().length > 0))
