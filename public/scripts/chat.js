@@ -37,11 +37,11 @@ socket.on ('disconnect', function () {
 })
 
 socket.on ('updateUserList', function (users) {
-    const ol = jQuery ('<ul></ul>')
+    const ul = jQuery ('<ul></ul>')
     users.forEach (function (user) {
-        ol.append (jQuery ('<li></li>').text (user))
+        ul.append (jQuery ('<li></li>').text (user))
     })
-    jQuery ('#users').html(ol)
+    jQuery ('#users').html(ul)
 })
 
 socket.on ('newMessage', function (msg) {
@@ -64,10 +64,9 @@ socket.on ('newLocMsg', function (msg) {
 
 msgForm.on ('submit', function (e) {
     e.preventDefault()
-    const text = msgInput.val()
-    if (text.trim().length < 1) return
-    socket.emit ('createMessage', {from: 'Srini', text})    
-    msgInput.val('').focus()
+    socket.emit ('createMessage', {text:msgInput.val()}, function () {
+        msgInput.val('').focus()
+    })    
 })
 
 btnSndLoc.on ('click', function () {
@@ -77,7 +76,6 @@ btnSndLoc.on ('click', function () {
     navigator.geolocation.getCurrentPosition (
         function (pos) {
             socket.emit ('createLocMsg', {
-                    from: 'Srini',
                     lat: pos.coords.latitude,
                     lon: pos.coords.longitude
                 },

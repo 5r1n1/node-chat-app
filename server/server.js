@@ -28,11 +28,17 @@ io.on ('connect', socket => {
         socket.broadcast.to(params.room).emit ('newMessage', genMsg ('Admin', `${params.name} has joined`))
         })
 
-    socket.on ('createMessage', msg => 
-        io.emit ('newMessage', genMsg (msg.from, msg.text)))
+    socket.on ('createMessage', (msg, callback) => {
+        const user = users.getUser (socket.id)
+        if (user && isRealStr (msg.text))
+            io.to (user.room).emit ('newMessage', genMsg (user.name, msg.text))
+        callback ()
+    })
 
     socket.on ('createLocMsg', (msg, callback) => {
-        io.emit ('newLocMsg', genLocMsg (msg.from, msg.lat, msg.lon))
+        const user = users.getUser (msg.socket.id)
+        if (user) 
+            io.to (user.room).emit ('newLocMsg', genLocMsg (user.name, msg.lat, msg.lon))
         callback ()
     })
 
@@ -42,7 +48,6 @@ io.on ('connect', socket => {
             io.to (user.room).emit ('newMessage', genMsg ('Admin', `${user.name} has left`))
             io.to (user.room).emit ('updateUserList', users.getUserList (user.room))
         }
-
     })
 })
 
