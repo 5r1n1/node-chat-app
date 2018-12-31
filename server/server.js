@@ -36,7 +36,7 @@ io.on ('connect', socket => {
     })
 
     socket.on ('createLocMsg', (msg, callback) => {
-        const user = users.getUser (msg.socket.id)
+        const user = users.getUser (socket.id)
         if (user) 
             io.to (user.room).emit ('newLocMsg', genLocMsg (user.name, msg.lat, msg.lon))
         callback ()
